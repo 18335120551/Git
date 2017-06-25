@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.mapper.CustomerMapper">
+	<!-- SQL片段 -->
+	<sql id="findByCondition">
+		<where>
+			<if test="custName != null and custName != ''">
+				cust_name like "%"#{custName}"%"
+			</if>
+			<if test="custSource != null and custSource != ''">
+				and cust_source = #{custSource}
+			</if>
+			<if test="custIndustry != null and custIndustry != ''">
+				and cust_industry = #{custIndustry}
+			</if>
+			<if test="custLevel != null and custLevel != ''">
+				and cust_level = #{custLevel}
+			</if>
+		</where>
+	</sql>
+	<!-- 根据QueryVo查询总记录数 -->
+	<!-- public Integer findTotalCount(QueryVo vo); -->
+	<select id="findTotalCount" parameterType="QueryVo" resultType="Integer">
+		select count(1) from customer
+		<include refid="findByCondition" />
+	</select>
+	<!-- 根据QueryVo根据条件查询 -->
+	<!-- public List<QueryVo> findCustomer(QueryVo vo); -->
+	<select id="findCustomer" parameterType="QueryVo" resultType="Customer">
+		select * from customer
+		<include refid="findByCondition" />
+		limit #{start},#{rows}
+	</select>
+	<!-- 根据id查询客户 -->
+	<select id="findCustomerById" parameterType="Integer"
+		resultType="Customer">
+		select * from customer
+		<where>
+			cust_id = #{id}
+		</where>
+	</select>
+	<!-- 根据id修改客户信息 -->
+	<update id="updateCustomerById" parameterType="Customer">
+		update customer
+		<set>
+			<if test="cust_name != null">
+				cust_name = #{cust_name},
+			</if>
+			<if test="cust_source != null">
+				cust_source = #{cust_source},
+			</if>
+			<if test="cust_industry != null">
+				cust_industry = #{cust_industry},
+			</if>
+			<if test="cust_level != null">
+				cust_level = #{cust_level},
+			</if>
+			<if test="cust_linkman != null">
+				cust_linkman = #{cust_linkman},
+			</if>
+			<if test="cust_phone != null">
+				cust_phone = #{cust_phone},
+			</if>
+			<if test="cust_mobile != null">
+				cust_mobile = #{cust_mobile},
+			</if>
+			<if test="cust_zipcode != null">
+				cust_zipcode = #{cust_zipcode},
+			</if>
+			<if test="cust_address != null">
+				cust_address = #{cust_address}
+			</if>
+		</set>
+		<where>
+			cust_id = #{cust_id}
+		</where>
+	</update>
+	<!-- 根据id删除客户信息 -->
+	<delete id="deleteCustomerById" parameterType="Integer">
+		delete from
+		customer where cust_id = #{id}
+	</delete>
+</mapper>
