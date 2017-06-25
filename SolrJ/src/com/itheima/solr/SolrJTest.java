@@ -14,7 +14,7 @@ import org.junit.Test;
 
 public class SolrJTest {
 
-	// 添加或修改
+	// 添加或修改111
 	@Test
 	public void testInsert() throws Exception {
 		HttpSolrServer solrServer = getSolrServer();
